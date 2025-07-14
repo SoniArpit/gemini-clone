@@ -24,6 +24,13 @@ class Settings:
     JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
     JWT_EXPIRATION_HOURS = int(os.getenv("JWT_EXPIRATION_HOURS", 24))
 
+    # celery
+    CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
+    CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
+
+    # gemini
+    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+
 
 
 settings = Settings()
