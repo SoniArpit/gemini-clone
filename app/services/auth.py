@@ -31,16 +31,12 @@ def create_user(db: Session, mobile: str) -> User:
         
     except IntegrityError as e:
         db.rollback()
-        # Log the error for debugging
-        print(f"Database integrity error: {e}")
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="User with this mobile number already exists"
         )
     except Exception as e:
         db.rollback()
-        # Log unexpected errors
-        print(f"Unexpected error creating user: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error"
