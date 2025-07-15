@@ -1,8 +1,6 @@
-from .user import User
-from .chatroom import Chatroom
-from .message import Message
-from .subscription_event  import SubscriptionEvent
-
+from app.models.user import User
+from app.models.chatroom import Chatroom
+from app.models.message import Message
 __all__ = [
     "User",
     "Chatroom",
