@@ -14,7 +14,7 @@ class Settings:
 
     # Redis
     REDIS_URL = os.getenv("REDIS_URL")
-    CACHE_TTL_SECONDS = int(os.getenv("CACHE_TTL_SECONDS", 5))
+    CACHE_TTL_SECONDS = int(os.getenv("CACHE_TTL_SECONDS", 300))
 
     # otp exipration
     OTP_EXPIRATION_MINUTES = int(os.getenv("OTP_EXPIRATION_MINUTES", 5))
