@@ -22,4 +22,12 @@ class ChatroomResponse(BaseModel):
     title: str
     user_id: UUID
     created_at: datetime
+
+class ChatroomDetailResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    title: str
+    user_id: UUID
+    created_at: datetime
     messages: list[MessageResponse]

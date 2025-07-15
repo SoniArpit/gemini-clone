@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from uuid import uuid4
 from datetime import datetime
 from app.models.chatroom import Chatroom
-from app.schemas.chatroom import ChatroomCreateRequest, ChatroomResponse
+from app.schemas.chatroom import ChatroomCreateRequest, ChatroomResponse, ChatroomDetailResponse
 import redis
 import json
 from app.core.config import settings
@@ -80,7 +80,7 @@ def get_chatroom_by_id(chatroom_id: UUID, user_id: UUID, db: Session):
             .filter(Chatroom.user_id == user_id)
             .one()
         )
-        return ChatroomResponse.model_validate(chatroom)
+        return ChatroomDetailResponse.model_validate(chatroom)
     except NoResultFound:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

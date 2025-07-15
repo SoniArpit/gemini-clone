@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
-from app.schemas.chatroom import ChatroomCreateRequest, ChatroomResponse
+from app.schemas.chatroom import ChatroomCreateRequest, ChatroomResponse, ChatroomDetailResponse
 from app.utils.dependencies import get_db, get_current_user
 from app.models.user import User
 import redis
@@ -26,7 +26,7 @@ def get_chatrooms(
 ):
     return get_chatrooms_for_user(user.id, db)
 
-@router.get("/{chatroom_id}", response_model=ChatroomResponse)
+@router.get("/{chatroom_id}", response_model=ChatroomDetailResponse)
 def get_chatroom(
     chatroom_id: str,
     db: Session = Depends(get_db),
