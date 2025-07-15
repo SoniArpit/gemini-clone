@@ -36,6 +36,7 @@ class Settings:
     STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
     STRIPE_PRO_PRICE_ID = os.getenv("STRIPE_PRO_PRICE_ID")
     STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
-
+    STRIPE_SUCCESS_URL = os.getenv("STRIPE_SUCCESS_URL")
+    STRIPE_CANCEL_URL = os.getenv("STRIPE_CANCEL_URL")
 
 settings = Settings()

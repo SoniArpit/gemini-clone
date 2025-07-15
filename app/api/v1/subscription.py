@@ -6,7 +6,7 @@ from app.services.subscription import (
     handle_webhook_event,
     get_subscription_status
 )
-from app.schemas.subscription import SubscriptionRequest, SubscriptionResponse, SubscriptionStatus
+from app.schemas.subscription import SubscriptionResponse, SubscriptionStatus
 from app.models.user import User
 import stripe
 from app.core.config import settings
@@ -16,7 +16,6 @@ router = APIRouter()
 
 @router.post("/subscribe/pro", response_model=SubscriptionResponse)
 async def subscribe_pro(
-    request: SubscriptionRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -25,9 +24,9 @@ async def subscribe_pro(
         result = create_checkout_session(
             db=db,
             user_id=str(current_user.id),
-            price_id=request.price_id,
-            success_url=request.success_url,
-            cancel_url=request.cancel_url
+            price_id=settings.STRIPE_PRO_PRICE_ID,
+            success_url=settings.STRIPE_SUCCESS_URL,
+            cancel_url=settings.STRIPE_CANCEL_URL
         )
         return SubscriptionResponse(**result)
     except stripe.error.StripeError as e:
