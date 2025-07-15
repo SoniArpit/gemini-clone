@@ -10,6 +10,7 @@ from typing import List
 from fastapi import HTTPException, status
 from uuid import UUID
 from sqlalchemy.exc import NoResultFound
+from sqlalchemy.orm import selectinload
 
 r = redis.Redis.from_url(settings.REDIS_URL)
 
@@ -74,6 +75,7 @@ def get_chatroom_by_id(chatroom_id: UUID, user_id: UUID, db: Session):
     try:
         chatroom = (
             db.query(Chatroom)
+            .options(selectinload(Chatroom.messages))
             .filter(Chatroom.id == chatroom_id)
             .filter(Chatroom.user_id == user_id)
             .one()

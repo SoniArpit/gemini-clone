@@ -1,8 +1,7 @@
 from pydantic import BaseModel, Field, field_validator, ConfigDict
 from uuid import UUID
-import re
 from datetime import datetime
-from typing import Optional
+from app.schemas.message import MessageResponse
 
 class ChatroomCreateRequest(BaseModel):
     title: str = Field(min_length=1, max_length=100, description="Chatroom title")
@@ -23,3 +22,4 @@ class ChatroomResponse(BaseModel):
     title: str
     user_id: UUID
     created_at: datetime
+    messages: list[MessageResponse]
