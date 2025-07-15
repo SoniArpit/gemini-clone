@@ -6,7 +6,7 @@ from app.schemas.message import MessageRequest
 from app.schemas.common import SuccessResponse
 from app.models.user import User
 from app.services.message import send_message
-from app.tasks.gemini_tasks import generate_reply_task
+from app.services.subscription import rate_limit_middleware
 
 
 router = APIRouter()
@@ -15,9 +15,10 @@ router = APIRouter()
 def send_message_endpoint(
     chatroom_id: UUID,
     payload: MessageRequest,
-    user: User = Depends(get_current_user)
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
 ):
-    send_message(str(chatroom_id), payload.message, str(user.id))
-    # generate_reply_task.delay(str(chatroom_id), payload.message, str(user.id))
+    rate_limit_middleware(db=db, user_id=str(user.id))
+    send_message(str(chatroom_id), payload.prompt, str(user.id))
     
     return SuccessResponse(success=True, message="Message is being processed.")

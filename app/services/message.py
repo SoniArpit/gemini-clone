@@ -7,14 +7,14 @@ from fastapi import HTTPException, status
 from app.models.message import SenderEnum
 from app.tasks.gemini_tasks import generate_reply_task
 
-def send_message(chatroom_id: str, message: str, user_id: str):
-    if message.strip() == "":
+def send_message(chatroom_id: str, prompt: str, user_id: str):
+    if prompt.strip() == "":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Message cannot be empty"
+            detail="Prompt cannot be empty"
         )
     try:
-        generate_reply_task.delay(str(chatroom_id), message, str(user_id))
+        generate_reply_task.delay(str(chatroom_id), prompt)
         return True
     except Exception as e:
         raise HTTPException(
@@ -22,25 +22,25 @@ def send_message(chatroom_id: str, message: str, user_id: str):
             detail=f"Failed to send message: {str(e)}"
         )
 
-def save_message_response(chatroom_id: str, prompt: str, reply: str, user_id: str):
+def save_message_response(chatroom_id: str, prompt: str, reply: str):
     """
-    Save user message and AI response to database
+    Save user prompt and AI response to database
     """
     db = SessionLocal()
     try:
         # Save user message
         user_message = Message(
             chatroom_id=chatroom_id,
-            sender=SenderEnum.user,  # Assuming you have USER enum value
+            sender=SenderEnum.user,
             content=prompt,
         )
         db.add(user_message)
-        db.flush()  # Get the ID without committing
+        db.flush() 
         
         # Save AI response
         ai_message = Message(
             chatroom_id=chatroom_id,
-            sender=SenderEnum.gemini,  # Assuming you have AI enum value
+            sender=SenderEnum.gemini,
             content=reply,
         )
         db.add(ai_message)
