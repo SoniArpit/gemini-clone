@@ -6,7 +6,6 @@ from app.models.user import User
 import redis
 from app.core.config import settings
 from app.services.chatroom import create_chatroom_for_user, get_chatrooms_for_user, get_chatroom_by_id
-from sqlalchemy.exc import NoResultFound
 router = APIRouter()
 
 r = redis.Redis.from_url(settings.REDIS_URL)

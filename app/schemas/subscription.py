@@ -1,7 +1,4 @@
 from pydantic import BaseModel
-from enum import Enum
-from typing import Optional
-from datetime import datetime
 from app.models.user import TierEnum
 
 class SubscriptionResponse(BaseModel):

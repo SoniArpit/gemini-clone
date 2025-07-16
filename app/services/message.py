@@ -1,7 +1,4 @@
 from app.models.message import Message
-from sqlalchemy.orm import Session
-from uuid import uuid4
-from datetime import datetime
 from app.core.db import SessionLocal
 from fastapi import HTTPException, status
 from app.models.message import SenderEnum
