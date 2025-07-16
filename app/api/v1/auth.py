@@ -25,7 +25,7 @@ def signup(payload: SignupRequest, db: Session = Depends(get_db)):
 
     return SuccessResponse(
         success=True,
-        message="Signup successful. Please verify OTP."
+        message="Signup successful. Please send OTP to verify."
     )
     
 @router.post("/send-otp", response_model=SuccessResponse)
@@ -47,7 +47,7 @@ def send_otp(payload: SendOtpRequest, db: Session = Depends(get_db)):
 
     return SuccessResponse(
         success=True, 
-        message="OTP sent successfully",
+        message="OTP sent successfully. Please verify OTP.",
         data={
             "otp": otp
         }
@@ -111,7 +111,7 @@ def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db
     otp = generate_otp()
     store_otp(payload.mobile, otp)
 
-    return SuccessResponse(success=True, message="OTP sent for password reset, Please verify OTP", data={"otp": otp})
+    return SuccessResponse(success=True, message="OTP sent for password reset. Please verify OTP", data={"otp": otp})
 
 
 @router.post("/change-password", response_model=SuccessResponse)
