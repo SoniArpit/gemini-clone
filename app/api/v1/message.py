@@ -19,6 +19,6 @@ def send_message_endpoint(
     db: Session = Depends(get_db)
 ):
     rate_limit_middleware(db=db, user_id=str(user.id))
-    send_message(str(chatroom_id), payload.prompt, str(user.id))
+    send_message(str(chatroom_id), payload.prompt, db)
     
     return SuccessResponse(success=True, message="Message is being processed.")

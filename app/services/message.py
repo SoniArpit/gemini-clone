@@ -3,13 +3,24 @@ from app.core.db import SessionLocal
 from fastapi import HTTPException, status
 from app.models.message import SenderEnum
 from app.tasks.gemini_tasks import generate_reply_task
+from app.models.chatroom import Chatroom
+from sqlalchemy.orm import Session
 
-def send_message(chatroom_id: str, prompt: str, user_id: str):
-    if prompt.strip() == "":
+def send_message(chatroom_id: str, prompt: str, db: Session):
+    if not prompt.strip():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Prompt cannot be empty"
         )
+
+    # Check if chatroom exists
+    chatroom = db.query(Chatroom).filter(Chatroom.id == chatroom_id).first()
+    if not chatroom:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Chatroom not found"
+        )
+
     try:
         generate_reply_task.delay(str(chatroom_id), prompt)
         return True
