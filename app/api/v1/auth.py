@@ -111,7 +111,7 @@ def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db
     otp = generate_otp()
     store_otp(payload.mobile, otp)
 
-    return SuccessResponse(success=True, message="OTP sent for password reset", data={"otp": otp})
+    return SuccessResponse(success=True, message="OTP sent for password reset, Please verify OTP", data={"otp": otp})
 
 
 @router.post("/change-password", response_model=SuccessResponse)
